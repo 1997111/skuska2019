@@ -1,0 +1,38 @@
+---
+title: "T-test Vancikova"
+output: html_notebook
+---
+Ako prvé importujem data, ktoré nazvem pre jednoduchost data. Výskum zahrnoval 25 fajciarov a 25 nefajciarov. Vsetkým bolo ukázané emotívne video o rakovine spôsobenej facením.Po dvoch týzdnoch sa participantov opät pýtali, ci sú stále fajciari ci nefajciari.
+ 
+```{r}
+library(readr)
+data <- read_csv("https://raw.githubusercontent.com/1997111/skuska2019/master/stcp-Rdataset-smoker%20(1).csv?token=Ast8yWTg_8LVHGUMTj3K6tCz_SNPYDEjks5cXJK8wA%3D%3D")
+print(data)
+```
+V tabulke vidíme dva stlpce, before= pred videním videa, after= po videní videa.
+0=nefajciar, 1=fajciar
+
+Najprv stiahnem balík "dplyr",vdaka ktorému budem vediet manipulovat s dátami.
+```{r}
+library(dplyr)
+```
+Zoradím riadky.
+```{r}
+arrange(data)
+```
+Spocítam kolko bolo fajciarov pred videním videa a po.
+```{r}
+colSums(data)
+```
+Nakreslím jednoduchý graf, v ktorom je jasne vidiet, ze po pozretí klesol pocet fajciarov.
+```{r}
+plot(colSums(data),xlab = "pred a po", ylab = "pocet fajciarov")
+title(main="porovnanie poctu fajciarov pred a po")
+```
+
+Aplikujem t-test.
+```{r}
+t.test(data= data,Before ~ After )
+```
+
+Na zvolenej 95% hladine vyznamnosti prijímame alternatívnu hypotézu, teda zamietame nulovú hypotézu, že neexistujú štatistický významné rozdiely medzi stavom pred a po.
